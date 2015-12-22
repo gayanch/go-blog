@@ -16,12 +16,18 @@ type Popular struct {
 
 type Index struct {
 	Title string
+	Admin bool
 	MostViewed []Popular
 }
 
-func IndexData() Index {
+func IndexData(user string) Index {
 	var index Index
 	index.Title = conf["title"]
+	if user == "admin" {
+		index.Admin = true
+	} else {
+		index.Admin = false
+	}
 	
 	index.MostViewed = make([]Popular, 0)
 	

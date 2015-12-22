@@ -4,6 +4,8 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"os"
+	
+	//"fmt"
 )
 
 const (
@@ -69,6 +71,6 @@ func ReadBlogConfig() (XMLBlogConfigs, error) {
 	if err != nil {
 		return XMLBlogConfigs{}, err
 	}
-	
+	//fmt.Println(config)
 	return config, nil
 }
