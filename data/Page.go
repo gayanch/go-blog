@@ -3,19 +3,20 @@ package data
 import (
 	"github.com/gayanch/go-blog/dbconn"
 	"fmt"
+	"time"
 	"strconv"
 )	
 
 var articlesPerPage, _ = strconv.Atoi(conf["articles_per_page"])
 
-type entry struct {
-	Pid string
-	Title string
-	Body string
-}
+//type entry struct {
+//	Pid string
+//	Title string
+//	Body string
+//}
 
 type Page struct {
-	Entry []entry
+	Entry []Article
 }
 
 func PageByNumber(p int) Page {
@@ -43,11 +44,17 @@ func PageByNumber(p int) Page {
 //	}
 	
 	var page Page
-	page.Entry = make([]entry, 5)
+	page.Entry = make([]Article, 0)
 	fmt.Println(articlesPerPage)
-	rows := dbconn.Query("SELECT pid, title, body FROM post limit 5")
+	rows := dbconn.Query("SELECT pid, title, body, time FROM post limit 5")
+	var (
+		pid, title, body string
+		time time.Time
+	)
 	for i := 0; rows.Next(); i++ {
-		rows.Scan(&page.Entry[i].Pid, &page.Entry[i].Title, &page.Entry[i].Body)
+		rows.Scan(&pid, &title, &body, &time)
+		a := Article{ pid, title, body, fmt.Sprintf("%s", time) }
+		page.Entry = append(page.Entry, a)
 	}
 	rows.Close()
 	return page

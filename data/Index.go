@@ -23,14 +23,16 @@ func IndexData() Index {
 	var index Index
 	index.Title = conf["title"]
 	
-	index.MostViewed = make([]Popular, 5)
+	index.MostViewed = make([]Popular, 0)
 	
 	rows := dbconn.Query("SELECT post.pid, title FROM post, hits where post.pid = hits.pid order by hits.hits desc limit 5")
 	for i := 0; rows.Next(); i++ {
 		var pid, title string
 		rows.Scan(&pid, &title)
-		index.MostViewed[i].Link = fmt.Sprintf("/a/%s", pid)
-		index.MostViewed[i].Name = title
+//		index.MostViewed[i].Link = fmt.Sprintf("/a/%s", pid)
+//		index.MostViewed[i].Name = title
+		p := Popular{ fmt.Sprintf("/a/%s", pid), title }
+		index.MostViewed = append(index.MostViewed, p)
 	}
 	rows.Close()
 	return index
