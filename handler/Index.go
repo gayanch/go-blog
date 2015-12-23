@@ -8,8 +8,12 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := r.Cookie("username")
+	cookie, _ := r.Cookie("type")
+	var value string
+	if cookie != nil {
+		value = cookie.Value
+	}
 		
 	t, _ := template.ParseFiles("template/index.html");
-	t.ExecuteTemplate(w, t.Name(), data.IndexData(cookie.Value))
+	t.ExecuteTemplate(w, t.Name(), data.IndexData(value))
 }

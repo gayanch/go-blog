@@ -5,11 +5,12 @@ import (
 	"github.com/gayanch/go-blog/handler"
 )
 
-func main() {
-	http.HandleFunc("/", handler.Index)
+func main() {	
+	http.HandleFunc("/login", handler.Login)	
+	http.HandleFunc("/logout", handler.Logout)
 	http.HandleFunc("/a/", handler.Article)
 	http.HandleFunc("/p/", handler.Page)
-	http.HandleFunc("/login", handler.Login)
-	
+	http.HandleFunc("/", handler.Index)
+		
 	http.ListenAndServe(":8080", nil)
 }
