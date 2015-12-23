@@ -6,8 +6,8 @@ import (
 )
 
 func main() {	
-	http.HandleFunc("/login", handler.Login)	
 	http.HandleFunc("/logout", handler.Logout)
+	http.HandleFunc("/login", handler.Login)	
 	http.HandleFunc("/a/", handler.Article)
 	http.HandleFunc("/p/", handler.Page)
 	http.HandleFunc("/", handler.Index)

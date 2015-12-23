@@ -23,6 +23,8 @@ type Index struct {
 func IndexData(user string) Index {
 	var index Index
 	index.Title = conf["title"]
+	
+	fmt.Println("Index data: ", user)
 	if user == "admin" {
 		index.Admin = true
 	} else {

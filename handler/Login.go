@@ -1,7 +1,7 @@
 package handler
 
 import (
-	//"fmt"
+	"fmt"
 	"net/http"
 	"time"
 	
@@ -12,11 +12,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	username := r.Form["username"][0]
 	password := r.Form["password"][0]
-	
-	ok, level := data.Auth(username, password)
-	//fmt.Println("login ", username, password)
-	if (ok) {
-		expire := time.Now().Add(time.Hour)
+	fmt.Println("Login: ", username)
+	if ok, level := data.Auth(username, password); ok {
+		expire := time.Now().Add(time.Minute * 5)
 		cookie := http.Cookie{Name: "type", Value: level, Expires: expire}		
 		http.SetCookie(w, &cookie)		
 	}

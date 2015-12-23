@@ -3,14 +3,14 @@ package handler
 import (
 	"net/http"
 	"html/template"
-	//"fmt"
+	"fmt"
 	"github.com/gayanch/go-blog/data"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := r.Cookie("type")
-	var value string
-	if cookie != nil {
+	value := "none"
+	if cookie, err := r.Cookie("type"); err == nil && cookie != nil {
+		fmt.Println("Index: ", cookie.Value)
 		value = cookie.Value
 	}
 		
