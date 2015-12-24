@@ -24,7 +24,7 @@ func(sm SessionManager) Get(r *http.Request) (session, bool) {
 	if err != nil {
 		return session{}, false
 	}
-	
+
 	username := cookie.Value
 	if value, ok := sm.Session[username]; ok {
 		return value, true
@@ -38,6 +38,8 @@ func (sm *SessionManager) Set(w http.ResponseWriter, username, userType string) 
 	http.SetCookie(w, &cookie)
 }
 
-func (sm *SessionManager) Delete(username string) {
-	delete (sm.Session, username)
+func (sm *SessionManager) Delete(r *http.Request) {
+	if cookie, err := r.Cookie("session"); err != nil {
+		delete (sm.Session, cookie.Value)
+	}
 }

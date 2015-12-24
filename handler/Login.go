@@ -3,8 +3,8 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"time"
-	
+	//"time"
+
 	"github.com/gayanch/go-blog/data"
 )
 
@@ -14,9 +14,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	password := r.Form["password"][0]
 	fmt.Println("Login: ", username)
 	if ok, level := data.Auth(username, password); ok {
-		expire := time.Now().Add(time.Minute * 5)
-		cookie := http.Cookie{Name: "type", Value: level, Expires: expire}		
-		http.SetCookie(w, &cookie)		
+//		expire := time.Now().Add(time.Minute * 5)
+//		cookie := http.Cookie{Name: "type", Value: level, Expires: expire}
+//		http.SetCookie(w, &cookie)
+			sm.Set(w, username, level)
 	}
 	http.Redirect(w, r, "/", 301)
 }
