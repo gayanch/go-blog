@@ -11,7 +11,7 @@ type login struct {
 }
 
 func Login() login {
-  return login{"Go Blog - Login"}
+  return login{blogconf["title"] + " - Login"}
 }
 
 func Auth(username, password string) (string, bool) {

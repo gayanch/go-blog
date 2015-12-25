@@ -11,7 +11,7 @@ type newPost struct {
 }
 
 func NewPost() newPost {
-    return newPost{"Go Blog - New Post"}
+    return newPost{blogconf["title"] + " - New Post"}
 }
 
 func SavePost(title, body string) {

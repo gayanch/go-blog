@@ -21,6 +21,7 @@ func ViewPost(pid string) post {
     if rows.Next() {
         var p post
         rows.Scan(&p.Time, &p.Title, &p.Body)
+        p.Title = p.Title + " - " + blogconf["title"]
 
         //update hit counters
         sql = fmt.Sprintf("UPDATE hits SET hits = hits + 1 WHERE pid = %s", pid)
