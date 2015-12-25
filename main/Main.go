@@ -1,18 +1,21 @@
 package main
 
 import (
-	"net/http"
-	"github.com/gayanch/go-blog/handler"
+  "net/http"
+
+  "github.com/gayanch/go-blog/handler"
 )
 
 func main() {
-	http.HandleFunc("/", handler.Index)
-	http.HandleFunc("/a/", handler.Article)
-	http.HandleFunc("/p/", handler.Page)
-	http.HandleFunc("/new", handler.NewArticle)
-	http.HandleFunc("/save", handler.SaveArticle)
-	http.HandleFunc("/login", handler.Login)
-	http.HandleFunc("/logout", handler.Logout)
+    fs := http.FileServer(http.Dir("static"))
+    http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	http.ListenAndServe(":8080", nil)
+    http.HandleFunc("/", handler.Home)
+    http.HandleFunc("/page", handler.Page)
+    http.HandleFunc("/login", handler.Login)
+    http.HandleFunc("/logout", handler.Logout)
+    http.HandleFunc("/new", handler.NewPost)
+    http.HandleFunc("/view/", handler.ViewPost)
+
+    http.ListenAndServe(":8080", nil)
 }

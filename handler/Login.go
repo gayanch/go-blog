@@ -1,23 +1,31 @@
 package handler
 
 import (
-	"fmt"
-	"net/http"
-	//"time"
+  "net/http"
+  "html/template"
+  "fmt"
 
-	"github.com/gayanch/go-blog/data"
+  "github.com/gayanch/go-blog/data"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	username := r.Form["username"][0]
-	password := r.Form["password"][0]
-	fmt.Println("Login: ", username)
-	if ok, level := data.Auth(username, password); ok {
-//		expire := time.Now().Add(time.Minute * 5)
-//		cookie := http.Cookie{Name: "type", Value: level, Expires: expire}
-//		http.SetCookie(w, &cookie)
-			sm.Set(w, username, level)
-	}
-	http.Redirect(w, r, "/", 301)
+  fmt.Println(r.Method, ": Login")
+  if r.Method == "GET" {
+      t, _ := template.ParseFiles("template/login.html")
+      t.ExecuteTemplate(w, t.Name(), data.Login())
+  } else {
+      r.ParseForm()
+      username := r.Form["username"][0]
+      password := r.Form["password"][0]
+
+      if userType, ok := data.Auth(username, password); ok {
+          //save session
+          sm.Set(w, username, userType)
+
+          http.Redirect(w, r, "/", 302)
+      } else {
+          fmt.Fprintf(w, "Invalid login")
+      }
+  }
+
 }

@@ -1,30 +1,36 @@
 package data
 
 import (
-	"github.com/gayanch/go-blog/dbconn"
-	"fmt"
-	"time"
-)	
+    "fmt"
+    "time"
 
-type Page struct {
-	Entry []Article
+    "github.com/gayanch/go-blog/db"
+)
+
+type pagePost struct {
+    Pid string
+    Time time.Time
+    Title string
+    Body string
 }
 
-func PageByNumber(p int) Page {
-	var page Page
-	page.Entry = make([]Article, 0)
-	sql := fmt.Sprintf("SELECT pid, title, body, time FROM post limit %s", conf["articles_per_page"])
-	rows := dbconn.Query(sql)
-	
-	var (
-		pid, title, body string
-		time time.Time
-	)
-	for i := 0; rows.Next(); i++ {
-		rows.Scan(&pid, &title, &body, &time)
-		a := Article{ pid, title, body, fmt.Sprintf("%s", time) }
-		page.Entry = append(page.Entry, a)
-	}
-	rows.Close()
-	return page
+type page []pagePost
+
+func Page(pno string) page {
+    p := make(page, 0)
+    sql := fmt.Sprintf("SELECT pid, time, title, body FROM post ORDER BY pid DESC")
+    rows := db.Query(sql)
+    defer rows.Close()
+
+    for rows.Next() {
+        var tmp pagePost
+        rows.Scan(&tmp.Pid, &tmp.Time, &tmp.Title, &tmp.Body)
+
+        if (len(tmp.Body) > 100) {
+            //we are not showing whole body in page view
+            tmp.Body = tmp.Body[:100]
+        }
+        p = append(p, tmp)
+    }
+    return p
 }
