@@ -28,6 +28,6 @@ func Home() home {
         rows.Scan(&tmp.Id, &tmp.Title)
         p = append(p, tmp)
     }
-    h := home{Title: "Go Blog - Home", Popular:p}
+    h := home{Title: blogconf["title"], Popular:p}
     return h
 }

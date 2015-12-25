@@ -7,5 +7,6 @@ import (
 var sm session.SessionManager
 
 func init() {
+    //starting session manager
     sm = session.NewSessionManager()
 }

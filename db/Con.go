@@ -6,19 +6,18 @@ import (
   _ "github.com/ziutek/mymysql/godrv"
 )
 
-const (
-    db = "goblog"
-    user = "root"
-    passwd = "123"
-)
-
 func connect() *sql.DB {
-    conStr := fmt.Sprintf("tcp:localhost:3306*%s/%s/%s", db, user, passwd)
-    db, err := sql.Open("mymysql", conStr)
+    host := dbconf["db-host"]
+    dbname := dbconf["db-name"]
+    user := dbconf["db-user"]
+    passwd := dbconf["db-passwd"]
+
+    conStr := fmt.Sprintf("tcp:%s*%s/%s/%s", host, dbname, user, passwd)
+    dbc, err := sql.Open("mymysql", conStr)
     if err != nil {
         panic(err)
     }
-    return db
+    return dbc
 }
 
 func Query(sql string) *sql.Rows {
